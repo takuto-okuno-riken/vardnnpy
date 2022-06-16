@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](https://opensource.org/licenses/MIT)
 
-# Vector Auto-Regressive Deep Neural Network (VARDNN) Toolbox
+# Vector Auto-Regressive Deep Neural Network (VARDNN) Toolbox for Python
 
 ## Introduction
 VARDNN is a powerful tool of data-driven analysis technique to estimate directed FC (Functional Connectivity).
