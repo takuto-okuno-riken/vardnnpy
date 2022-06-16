@@ -26,44 +26,11 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 * tensorflow 2.9.*
 * pandas 1.4.*
 
-## Command line tool
-~~~
->> vardnn -h
-usage: vardnn [options] filename.csv ...
-  -d, --vddi          output VARDNN Directional Influence matrix result (<filename>_vddi.csv)
-  -c, --vdgc          output VARDNN Granger Causality matrix result (<filename>_vdgc.csv)
-  -m, --mvgc          output multivaliate Granger Causality matrix result (<filename>_mvgc.csv)
-  -g, --pwgc          output pairwise Granger Causality matrix result (<filename>_pwgc.csv)
-  -t, --te            output (LINUE) Transfer Entropy matrix result (<filename>_te.csv)
-  -f, --fc            output Functional Conectivity matrix result (<filename>_fc.csv)
-  -p, --pc            output Partial Correlation matrix result (<filename>_pc.csv)
-  -w, --wc            output Wavelet Coherence matrix result (<filename>_wc.csv)
-  -v, --var           output VAR (Vector Auto-Regression) coefficient matrix result (<filename>_mvar.csv)
-  --outpath           output files path (default:"results")
-  --pval              save P-value matrix of VARDNN-GC, mvGC, pwGC, TE, FC and PC (<filename>_*_pval.csv)
-  --fval alpha        save F-value with <alpha> matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_fval.csv, <filename>_*_fcrit.csv)
-  --aic               save AIC matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_aic.csv)
-  --bic               save BIC matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_bic.csv)
-  --format type       save file format <type> 0:csv, 1:mat(each), 2:mat(all) (default:0)
-  --groundtruth files calculate ROC curve and save AUC of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC (<filename>_*_auc.csv)
-  --transform type    input signal transform <type> 0:raw, 1:sigmoid (default:0)
-  --transopt num      signal transform option <num> (for type 1:centroid value)
-  --lag num           time lag <num> for mvGC, pwGC, TE and mVAR (default:3)
-  --ex files          VARDNN exogenous input signal <files> (file1.csv[:file2.csv:...])
-  --nctrl files       VARDNN node status control <files> (file1.csv[:file2.csv:...])
-  --ectrl files       VARDNN exogenous input control <files> (file1.csv[:file2.csv:...])
-  --epoch num         VARDNN training epoch number <num> (default:1000)
-  --l2 num            VARDNN training L2Regularization <num> (default:0.05)
-  --roiname files     ROI names <files> (file1.csv[:file2.csv:...])
-  --showsig           show node status signals of <filename>.csv
-  --showex            show exogenous input signals of <file1>.csv
-  --showmat           show result matrix of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
-  --showcg            show circle graph of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
-  --showroc           show ROC curve (by GroundTruth) of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
-  --nocache           do not use cache file for VARDNN training
-  -v, --version       show version number
-  -h, --help          show command line help
-~~~
+
+## Installation
+1. Download this [Toolbox](https://github.com/takuto-okuno-riken/vardnnpy) zip files.
+2. Extract zip file under your working directory <work_path>.
+
 
 ## Command line tool Demo
 This demo inputs 8 nodes random signal and outputs FC, mvGC, VARDNN-GC and VARDNN-DI results csv files and matrix graphs.
@@ -128,6 +95,47 @@ Several graphs (node signals, result matrix, circle graph, ROC curve) of each al
 <div align="center">
 <img src="data/rdmfig2.jpg">
 </div>
+
+
+## Command line tool
+~~~
+>> vardnn -h
+usage: vardnn [options] filename.csv ...
+  -d, --vddi          output VARDNN Directional Influence matrix result (<filename>_vddi.csv)
+  -c, --vdgc          output VARDNN Granger Causality matrix result (<filename>_vdgc.csv)
+  -m, --mvgc          output multivaliate Granger Causality matrix result (<filename>_mvgc.csv)
+  -g, --pwgc          output pairwise Granger Causality matrix result (<filename>_pwgc.csv)
+  -t, --te            output (LINUE) Transfer Entropy matrix result (<filename>_te.csv)
+  -f, --fc            output Functional Conectivity matrix result (<filename>_fc.csv)
+  -p, --pc            output Partial Correlation matrix result (<filename>_pc.csv)
+  -w, --wc            output Wavelet Coherence matrix result (<filename>_wc.csv)
+  -v, --var           output VAR (Vector Auto-Regression) coefficient matrix result (<filename>_mvar.csv)
+  --outpath           output files path (default:"results")
+  --pval              save P-value matrix of VARDNN-GC, mvGC, pwGC, TE, FC and PC (<filename>_*_pval.csv)
+  --fval alpha        save F-value with <alpha> matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_fval.csv, <filename>_*_fcrit.csv)
+  --aic               save AIC matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_aic.csv)
+  --bic               save BIC matrix of VARDNN-GC, mvGC, pwGC and TE (<filename>_*_bic.csv)
+  --format type       save file format <type> 0:csv, 1:mat(each), 2:mat(all) (default:0)
+  --groundtruth files calculate ROC curve and save AUC of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC (<filename>_*_auc.csv)
+  --transform type    input signal transform <type> 0:raw, 1:sigmoid (default:0)
+  --transopt num      signal transform option <num> (for type 1:centroid value)
+  --lag num           time lag <num> for mvGC, pwGC, TE and mVAR (default:3)
+  --ex files          VARDNN exogenous input signal <files> (file1.csv[:file2.csv:...])
+  --nctrl files       VARDNN node status control <files> (file1.csv[:file2.csv:...])
+  --ectrl files       VARDNN exogenous input control <files> (file1.csv[:file2.csv:...])
+  --epoch num         VARDNN training epoch number <num> (default:1000)
+  --l2 num            VARDNN training L2Regularization <num> (default:0.05)
+  --roiname files     ROI names <files> (file1.csv[:file2.csv:...])
+  --showsig           show node status signals of <filename>.csv
+  --showex            show exogenous input signals of <file1>.csv
+  --showmat           show result matrix of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
+  --showcg            show circle graph of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
+  --showroc           show ROC curve (by GroundTruth) of VARDNN-DI, VARDNN-GC, mVAR, mvGC, pwGC, TE, FC, PC and WC
+  --nocache           do not use cache file for VARDNN training
+  -v, --version       show version number
+  -h, --help          show command line help
+~~~
+
 
 ## Example Results
 Example results of causal relation matrix graphs of human fMRI signals (132 ROI).
