@@ -32,10 +32,10 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 2. Extract zip file under your working directory <work_path>/vardnnpy-main.
 3. This is not required, but we recommend using the conda virtual environment.
 ~~~
-(base) work_path> cd vardnnpy-main
-(base) vardnnpy-main> conda create -n vardnn python=3.9
+(base) work_path>cd vardnnpy-main
+(base) vardnnpy-main>conda create -n vardnn python=3.9
 ...
-(base) vardnnpy-main> conda activate vardnn
+(base) vardnnpy-main>conda activate vardnn
 (vardnn) vardnnpy-main>
 ~~~
 4. Install several packages.
