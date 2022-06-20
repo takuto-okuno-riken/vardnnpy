@@ -96,11 +96,12 @@ class MultivariateVARDNNetwork(object):
             idx = np.where(control[i, :] == 1)
             yi = y[0:self.sig_len - self.lags, i]
             xti = yt[:, idx[0]]
+            print('training node ' + str(i))
 
             hist = self.models[i].fit(xti, yi,
                               batch_size=batch_size,
                               epochs=epochs,
-                              verbose=1,
+                              verbose=0,
                               validation_split=0.2,
                               shuffle=True,
                               callbacks=[early_stopping])
