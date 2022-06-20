@@ -40,13 +40,13 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 ~~~
 4. Install several packages.
 ~~~
-(vardnn) vardnnpy-main>pip install matplotlib==3.5
+(vardnn) vardnnpy-main>pip install "matplotlib>=3.5,<3.6"
 ...
-(vardnn) vardnnpy-main>pip install scikit-learn==1.1
+(vardnn) vardnnpy-main>pip install "scikit-learn>=1.1,<1.2"
 ...
-(vardnn) vardnnpy-main>pip install pandas==1.4
+(vardnn) vardnnpy-main>pip install "pandas>=1.4,<1.5"
 ...
-(vardnn) vardnnpy-main>pip install tensorflow==2.9
+(vardnn) vardnnpy-main>pip install "tensorflow>=2.9,<2.10"
 ...
 ~~~
 5. Run the following demos.
