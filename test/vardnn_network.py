@@ -28,8 +28,13 @@ class TestVARDNNetwork(object):
         x[1, 1:sig_len] = x[5, 0:sig_len-1]
         x[3, 1:sig_len] = x[5, 0:sig_len-1]
         net = MultivariateVARDNNetwork()
-        net.init(x=x, lags=1)
-        net.fit(x=x, batch_size=int(sig_len/3), epochs=500)
+        cache_path = 'results/vardnn-test1'
+        if os.path.isdir(cache_path):
+            net.load(cache_path)
+        else:
+            net.init(x=x, lags=1)
+            net.fit(x=x, batch_size=int(sig_len/3), epochs=500)
+            net.save(cache_path)
         vdi = MultivariateVARDNNDirectionalInfluence()
         vdi.plot(net=net)
         vdg = MultivariateVARDNNGrangerCausality()

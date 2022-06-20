@@ -76,8 +76,8 @@ class PairwiseGrangerCausality(object):
 
         return gc_mat
 
-    def plot(self, x, ex_signal=[], node_control=[], ex_control=[], is_full_node=0):
-        gc_mat = self.calc(x=x, ex_signal=ex_signal, node_control=node_control, ex_control=ex_control, is_full_node=is_full_node)
+    def plot(self, x, ex_signal=[], node_control=[], ex_control=[], lags=3, is_full_node=0):
+        gc_mat = self.calc(x=x, ex_signal=ex_signal, node_control=node_control, ex_control=ex_control, lags=lags, is_full_node=is_full_node)
         plt.matshow(gc_mat)
 #        plt.axis('off')
         plt.title('Pairwise Granger Causality')
@@ -85,6 +85,7 @@ class PairwiseGrangerCausality(object):
 #        ax = plt.gca()
         plt.xlabel('Source Nodes')
         plt.ylabel('Target Nodes')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
         return gc_mat
 

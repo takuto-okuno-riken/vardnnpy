@@ -50,6 +50,11 @@ class MultivariatePCVARDirectionalInfluence(object):
             for j in range(node_max):
                 if i == j:
                     continue
+                if len(node_control) and j < node_num and node_control[i, j] == 0:
+                    continue
+                if len(ex_control) and j >= node_num and ex_control[i, j-node_num] == 0:
+                    continue
+
                 control2 = control[i, :].copy()
                 for p in range(lags):
                     control2[j + node_max * p] = 2
@@ -71,6 +76,7 @@ class MultivariatePCVARDirectionalInfluence(object):
         plt.colorbar()
         plt.xlabel('Source Nodes')
         plt.ylabel('Target Nodes')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
         return di_mat
 

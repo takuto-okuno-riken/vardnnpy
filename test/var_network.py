@@ -28,7 +28,12 @@ class TestVARNetwork(object):
         x[3, 1:sig_len] = x[5, 0:sig_len-1]
 
         net = MultivariateVARNetwork()
-        net.init(x=x, lags=1)
+        cache_path = 'results/var-test1'
+        if os.path.isdir(cache_path):
+            net.load(cache_path)
+        else:
+            net.init(x=x, lags=1)
+            net.save(cache_path)
         vdi = MultivariateVARDirectionalInfluence()
         vdi.plot(net=net)
 
@@ -48,6 +53,8 @@ class TestVARNetwork(object):
         net = MultivariateVARNetwork()
         net.init(x=x, lags=1, ex_signal=ex, node_control=node_control, ex_control=ex_control)
         vdi.plot(net=net, node_control=node_control, ex_control=ex_control, is_full_node=1)
+
+        # save and load test
 
 
 if __name__ == '__main__':

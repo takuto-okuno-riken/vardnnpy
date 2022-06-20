@@ -28,7 +28,12 @@ class TestPCVARNetwork(object):
         x[3, 1:sig_len] = x[5, 0:sig_len-1]
 
         net = MultivariatePCVARNetwork()
-        net.init(x=x, lags=1, explained_th=0.9)
+        cache_path = 'results/pcvar-test1'
+        if os.path.isdir(cache_path):
+            net.load(cache_path)
+        else:
+            net.init(x=x, lags=1, explained_th=0.9)
+            net.save(cache_path)
         pvi = MultivariatePCVARDirectionalInfluence()
         pvi.plot(net=net)
         pvg = MultivariatePCVARGrangerCausality()

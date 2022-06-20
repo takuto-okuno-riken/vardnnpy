@@ -21,7 +21,7 @@ class PartialCorrelation(object):
     def __init__(self):
         self
 
-    def calc(self, x, ex_signal=[], node_control=[], ex_control=[], lags=3, is_full_node=0):
+    def calc(self, x, ex_signal=[], node_control=[], ex_control=[], is_full_node=0):
         node_num = x.shape[0]
         sig_len = x.shape[1]
         if len(ex_signal):
@@ -38,8 +38,6 @@ class PartialCorrelation(object):
         pc_mat[:, :] = np.nan
 
         x = x.transpose()
-        yt = np.zeros((sig_len-lags, lags*node_max))
-        control = np.ones((node_num, lags*node_max))
         if len(node_control) == 0:
             node_control = np.ones((node_num, node_num))
         if len(ex_control) == 0:
@@ -53,6 +51,10 @@ class PartialCorrelation(object):
             xi = x[:, i]
 
             for j in range(i, node_max):
+                if len(node_control) and j < node_num and node_control[i, j] == 0:
+                    continue
+                if len(ex_control) and j >= node_num and ex_control[i, j-node_num] == 0:
+                    continue
                 control3 = control2.copy()
                 control3[j] = 0
                 idx = np.where(control3 == 1)
@@ -80,6 +82,7 @@ class PartialCorrelation(object):
         plt.colorbar()
         plt.xlabel('Source Nodes')
         plt.ylabel('Target Nodes')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
         return pc_mat
 

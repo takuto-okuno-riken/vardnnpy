@@ -65,6 +65,10 @@ class MultivariateGrangerCausality(object):
             for j in range(node_max):
                 if i == j:
                     continue
+                if len(node_control) and j < node_num and node_control[i, j] == 0:
+                    continue
+                if len(ex_control) and j >= node_num and ex_control[i, j-node_num] == 0:
+                    continue
 
                 control2 = control[i, :].copy()
                 for p in range(lags):
@@ -80,14 +84,15 @@ class MultivariateGrangerCausality(object):
 
         return gc_mat
 
-    def plot(self, x, ex_signal=[], node_control=[], ex_control=[], is_full_node=0):
-        gc_mat = self.calc(x=x, ex_signal=ex_signal, node_control=node_control, ex_control=ex_control, is_full_node=is_full_node)
+    def plot(self, x, ex_signal=[], node_control=[], ex_control=[], lags=3, is_full_node=0):
+        gc_mat = self.calc(x=x, ex_signal=ex_signal, node_control=node_control, ex_control=ex_control, lags=lags, is_full_node=is_full_node)
         plt.matshow(gc_mat)
 #        plt.axis('off')
         plt.title('Multivariate Granger Causality')
         plt.colorbar()
         plt.xlabel('Source Nodes')
         plt.ylabel('Target Nodes')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
         return gc_mat
 

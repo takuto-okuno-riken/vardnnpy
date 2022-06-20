@@ -60,6 +60,7 @@ class FunctionalConnectivity(object):
 #        ax = plt.gca()
         plt.xlabel('Source Nodes')
         plt.ylabel('Target Nodes')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
         return fc_mat
 
