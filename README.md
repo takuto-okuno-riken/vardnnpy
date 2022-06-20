@@ -56,7 +56,7 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 This demo inputs 8 nodes random signal and outputs FC, mvGC, VARDNN-GC and VARDNN-DI results csv files and matrix graphs.
 (Copy and paste this command line. Demo data is included in VARDNN Toolbox.)
 ~~~
-(vardnn) vardnnpy-main>python vardnn.py --fc --mvgc --vddi --vdgc --showsig --showmat --transform 1 --epoch 100 data/signal8.csv
+(vardnn) vardnnpy-main>python vardnn.py --fc --mvgc --vddi --vdgc --showsig --showmat --epoch 100 data/signal8.csv
 ...
 loading signals : data/signal8.csv
 saving matrix : results\signal8_fc.csv
