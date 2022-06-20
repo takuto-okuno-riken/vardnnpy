@@ -238,11 +238,11 @@ if __name__ == '__main__':
     if opt.vddi:
         for i in range(len(CX)):
             cache_path = 'results' + os.sep + 'cache-vardnn-' + CXnames[i]
+            ex_signal, node_control, ex_control, is_full_node = get_optional_signals(Cex, Cctrl, Cexctrl, i)
             net = models.MultivariateVARDNNetwork()
             if os.path.isdir(cache_path) and not opt.nocache:
                 net.load(cache_path)
             else:
-                ex_signal, node_control, ex_control, is_full_node = get_optional_signals(Cex, Cctrl, Cexctrl, i)
                 net.init(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
                          lags=opt.lag, reg_l2=opt.l2)
                 net.fit(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
@@ -264,11 +264,11 @@ if __name__ == '__main__':
     if opt.vdgc:
         for i in range(len(CX)):
             cache_path = 'results' + os.sep + 'cache-vardnn-' + CXnames[i]
+            ex_signal, node_control, ex_control, is_full_node = get_optional_signals(Cex, Cctrl, Cexctrl, i)
             net = models.MultivariateVARDNNetwork()
             if os.path.isdir(cache_path) and not opt.nocache:
                 net.load(cache_path)
             else:
-                ex_signal, node_control, ex_control, is_full_node = get_optional_signals(Cex, Cctrl, Cexctrl, i)
                 net.init(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
                          lags=opt.lag, reg_l2=opt.l2)
                 net.fit(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
