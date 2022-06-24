@@ -4,13 +4,13 @@
 
 ## Introduction
 VARDNN is a powerful tool of data-driven analysis technique to estimate directed FC (Functional Connectivity).
-Based on VARDNN framework, two types of directed FC are defined, such as VARDNN-DI and VARDNN-GC to measure causal relation among multiple time-series data.
+Based on VARDNN framework, two types of directed FC are defined, such as VARDNN-DI (Directional Influence) and VARDNN-GC (Granger Causality) to measure causal relation among multiple time-series data.
 <div align="center">
 <img src="data/figure1.jpg">
 </div>
 
 This toolbox includes several functional connectome measures, such as VARDNN-DI, VARDNN-GC, multivariate Granger Causality (GC), pairwise GC,
-multivariate Principal Component (PC)-GC, Functional Connectivity (Correlation), Partial Correlation to estimate conectivity from multiple node signals.
+multivariate Principal Component (PC)-GC, Functional Connectivity (Correlation) and Partial Correlation to estimate conectivity from multiple node signals.
 <div align="center">
 <img src="data/figure3b.jpg">
 </div>
