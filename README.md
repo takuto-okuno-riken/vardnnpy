@@ -116,7 +116,6 @@ Press Enter to exit...
 |exSignal|&lt;exogenous nodes&gt; x &lt;length&gt;(double)|exogenous signals|
 |nodeControl|&lt;nodes&gt; x &lt;nodes&gt;(logical)|node connection control matrix|
 |exControl|&lt;nodes&gt; x &lt;exogenous nodes&gt;(logical)|exogenous node connection control matrix|
-|groundTruth|&lt;nodes&gt; x &lt;nodes&gt;(logical)|ground truth of network connection for ROC curve|
 
 Several graphs (node signals, result matrix) of each algorithm are shown by vardnn command.
 <div align="center">
