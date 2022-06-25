@@ -53,6 +53,7 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 
 
 ## Command line tool Demo
+<b>Demo 1</b><br>
 This demo inputs 8 nodes random signal and outputs FC, mvGC, VARDNN-GC and VARDNN-DI results csv files and matrix graphs.
 (Copy and paste this command line. Demo data is included in VARDNN Toolbox.)
 ~~~
@@ -79,6 +80,7 @@ These are output graphs of vardnn command.
 </div>
 
 ___
+<b>Demo 2</b><br>
 VARDNN can take exogenous input signals with control matrix.
 ~~~
 (vardnn) vardnnpy-main>python vardnn.py --vddi --vdgc --showmat --epoch 100 --transform 1 --nocache --ex data/signal8ex.csv --ectrl data/ctrleye.csv data/signal8.csv
@@ -100,6 +102,7 @@ saving matrix : results\signal8_vdgc.csv
 Press Enter to exit...
 ~~~
 ___
+<b>Demo 3</b><br>
 This demo inputs 32 nodes synthetic neural activity signals of .mat file and outputs VARDNN-DI results.
 Result matrices of directed FC is saved in ww32-1_&lt;algorithm&gt;_all.mat file.
 ~~~
