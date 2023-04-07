@@ -26,6 +26,42 @@ class MultivariateVARNetwork(object):
         self.lr_objs = []
         self.residuals = []
 
+    def init_with_matnet(self, dic):
+        rvec = []
+        bvec = []
+        if type(dic) is np.ndarray:
+            self.node_num = int(dic['nodeNum'][0, 0])
+            self.sig_len = int(dic['sigLen'][0, 0])
+            self.ex_num = int(dic['exNum'][0, 0])
+            self.lags = int(dic['lags'][0, 0])
+            self.cx_m = dic['cxM'][0, 0].flatten()
+            self.cx_cov = dic['cxCov'][0, 0]
+            bv = dic['bvec'][0, 0].flatten()
+            rv = dic['rvec'][0, 0].flatten()
+            for j in range(self.node_num):
+                bvec.append(bv[j].flatten())
+                rvec.append(rv[j].flatten())
+        else:  # h5py
+            self.node_num = int(dic['nodeNum'][0, 0])
+            self.sig_len = int(dic['sigLen'][0, 0])
+            self.ex_num = int(dic['exNum'][0, 0])
+            self.lags = int(dic['lags'][0, 0])
+            self.cx_m = dic['cxM'][::].flatten()
+            self.cx_cov = dic['cxCov'][::]
+            brefs = dic['bvec'][::].flatten()
+            rrefs = dic['rvec'][::].flatten()
+            for i in range(len(rrefs)):
+                bvec.append(dic[brefs[i]][::].flatten())
+                rvec.append(dic[rrefs[i]][::].flatten())
+        self.node_max = self.node_num + self.ex_num
+        for i in range(self.node_num):
+            lr = LinearRegression(fit_intercept=True)
+            b = bvec[i].flatten()
+            lr.coef_ = b[0:len(b)-1]
+            lr.intercept_ = b[len(b)-1]
+            self.lr_objs.append(lr)
+            self.residuals.append(rvec[i])
+
     def init(self, x, ex_signal=[], node_control=[], ex_control=[], lags=3):
         self.node_num = x.shape[0]
         self.sig_len = x.shape[1]
@@ -37,14 +73,16 @@ class MultivariateVARNetwork(object):
             self.ex_num = 0
         self.node_max = self.node_num + self.ex_num
 
+        # set control
+        control = np.ones((self.node_num, lags*self.node_max), dtype='bool')
+        if len(node_control) == 0:
+            node_control = np.ones((self.node_num, self.node_num), dtype='bool')
+        if len(ex_control) == 0:
+            ex_control = np.ones((self.node_num, self.ex_num), dtype='bool')
+
         x = x.transpose()
         y = np.flipud(x)
-        yt = np.zeros((self.sig_len-lags, lags*self.node_max))
-        control = np.ones((self.node_num, lags*self.node_max))
-        if len(node_control) == 0:
-            node_control = np.ones((self.node_num, self.node_num))
-        if len(ex_control) == 0:
-            ex_control = np.ones((self.node_num, self.ex_num))
+        yt = np.zeros((self.sig_len-lags, lags*self.node_max), dtype=x.dtype)
         for p in range(lags):
             yt[:, self.node_max*p:self.node_max*(p+1)] = y[1+p:self.sig_len-lags+1+p, :]
             control[:, self.node_max*p:self.node_max*(p+1)] = np.concatenate([node_control, ex_control], 1)
@@ -61,6 +99,70 @@ class MultivariateVARNetwork(object):
             self.lr_objs.append(lr)
             self.residuals.append(r)
 
+    def init_with_cell(self, cx, cex_signal=[], node_control=[], ex_control=[], lags=3):
+        self.node_num = cx[0].shape[0]
+        self.sig_len = cx[0].shape[1]
+        self.lags = lags
+        if len(cex_signal):
+            self.ex_num = cex_signal[0].shape[0]
+        else:
+            self.ex_num = 0
+        self.node_max = self.node_num + self.ex_num
+        dtype = cx[0].dtype
+
+        # set control
+        control = np.ones((self.node_num, lags*self.node_max), dtype='bool')
+        if len(node_control) == 0:
+            node_control = np.ones((self.node_num, self.node_num), dtype='bool')
+        if len(ex_control) == 0:
+            ex_control = np.ones((self.node_num, self.ex_num), dtype='bool')
+        for p in range(lags):
+            control[:, self.node_max * p:self.node_max * (p + 1)] = np.concatenate([node_control, ex_control], 1)
+
+        # calculate mean and covariance of each node
+        y = cx[0]
+        for i in range(1, len(cx)):
+            y = np.concatenate([y, cx[i]], axis=1)
+        self.cx_m = np.mean(y, axis=1, dtype=dtype)
+        self.cx_cov = np.cov(y, dtype=dtype)
+        del y  # clear memory
+
+        all_in_len = 0
+        for i in range(len(cx)):
+            all_in_len += cx[i].shape[1] - lags
+
+        # this implementation is memory consumption
+        xts = 0
+        xt = np.empty((all_in_len, self.node_num), dtype=dtype)  # smaller memory
+        xti = np.empty((all_in_len, lags*self.node_max), dtype=dtype)  # smaller memory
+        for i in range(len(cx)):
+            x = cx[i]
+            if len(cex_signal):
+                x = np.concatenate([x, cex_signal[i]], 0)
+            y = np.flipud(x.transpose())
+
+            slen = y.shape[0]
+            sl = slen - lags
+            yt = np.empty((sl, lags*self.node_max), dtype=dtype)
+            for p in range(lags):
+                yt[:, self.node_max*p:self.node_max*(p+1)] = y[1+p:sl+1+p, :]
+
+            xt[xts:xts+sl, :] = y[0:sl, 0:self.node_num]
+            xti[xts:xts+sl, :] = yt[:, :]
+            xts = xts + sl
+            del x, y, yt
+
+        for i in range(self.node_num):
+            lr = LinearRegression(fit_intercept=True)
+            idx = np.where(control[i, :] == 1)
+            yi = xt[:, i]
+            xti2 = xti[:, idx[0]]
+
+            lr.fit(xti2, yi)
+            pred = lr.predict(xti2)
+            r = (yi - pred)
+            self.lr_objs.append(lr)
+            self.residuals.append(r)
 
     def load(self, path_name):
         list_file = path_name + os.sep + 'list.dat'
