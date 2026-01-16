@@ -33,7 +33,7 @@ Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 3. This is not required, but we recommend using the conda virtual environment.
 ~~~
 (base) work_path>cd vardnnpy-main
-(base) vardnnpy-main>conda create -n vardnn python=3.9
+(base) vardnnpy-main>conda create -n vardnn python=3.11.14
 ...
 (base) vardnnpy-main>conda activate vardnn
 (vardnn) vardnnpy-main>
