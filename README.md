@@ -20,11 +20,11 @@ then show output of causal relational matrix and save data in csv or mat file.
 Matlab version is [here](https://github.com/takuto-okuno-riken/vardnn).
 
 ## Requirements: software
-* Python 3.9.*
-* matplotlib 3.5.*
-* scikit_learn 1.1.*
-* tensorflow 2.9.*
-* pandas 1.4.*
+* Python 3.11.14
+* matplotlib 3.10.8
+* scikit_learn 1.8.0
+* tensorflow 2.20.0
+* pandas 1.3.3
 
 
 ## Installation
