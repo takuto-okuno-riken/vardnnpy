@@ -45,6 +45,8 @@ class MultivariateVARDNNDirectionalInfluence(object):
             xti = one_input[:, idx[0]]
 
             z = net.models[i].predict(xti, verbose=0)
+            if np.isscalar(z) == False:
+                z = z[0,0]
 
             for j in range(node_max):
                 if i == j:
@@ -59,6 +61,8 @@ class MultivariateVARDNNDirectionalInfluence(object):
                 xti[:, :] = control2[idx[0]]
                 xtj = np.where(xti == 2, 0, xti)
                 zj = net.models[i].predict(xtj, verbose=0)
+                if np.isscalar(zj) == False:
+                    zj = zj[0, 0]
 
                 di_mat[i, j] = np.abs(z - zj)
 

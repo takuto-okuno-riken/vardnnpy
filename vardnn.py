@@ -272,7 +272,7 @@ if __name__ == '__main__':
                 net.init(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
                          lags=opt.lag, reg_l2=opt.l2)
                 net.fit(x=CX[i], ex_signal=ex_signal, node_control=node_control, ex_control=ex_control,
-                        epochs=opt.epoch, batch_size=int(CX[i].shape[1]/3))
+                        epochs=opt.epoch)
                 if not opt.nocache:
                     net.save(cache_path)
 

@@ -70,7 +70,7 @@ class MultivariateVARDNNetwork(object):
                             kernel_initializer=ini_randuni, bias_initializer='zeros'))
             model.build()
 #            model.summary()  # can be commented out
-            adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-8)
+            adam = Adam()
             model.compile(loss='mean_squared_error', optimizer=adam)
             self.models.append(model)
 
@@ -90,7 +90,7 @@ class MultivariateVARDNNetwork(object):
         for p in range(self.lags):
             yt[:, self.node_max*p:self.node_max*(p+1)] = y[1+p:self.sig_len-self.lags+1+p, :]
             control[:, self.node_max*p:self.node_max*(p+1)] = np.concatenate([node_control, ex_control], 1)
-        early_stopping = EarlyStopping(monitor='val_loss', patience=5)
+        early_stopping = EarlyStopping(monitor='loss', patience=5, restore_best_weights=True, start_from_epoch=int(epochs/2))
 
         for i in range(self.node_num):
             idx = np.where(control[i, :] == 1)
@@ -99,14 +99,16 @@ class MultivariateVARDNNetwork(object):
             print('training node ' + str(i))
 
             hist = self.models[i].fit(xti, yi,
-                              batch_size=batch_size,
+#                              batch_size=batch_size,
                               epochs=epochs,
                               verbose=0,
-                              validation_split=0.2,
+#                              validation_split=0.2,
                               shuffle=True,
                               callbacks=[early_stopping])
             pred = self.models[i].predict(xti, verbose=0)
             r = (yi - pred)
+#            r2 = r * r
+#            print('err' + str(np.sqrt(np.sum(r2))))
             self.residuals.append(r)
 
 
@@ -134,7 +136,7 @@ class MultivariateVARDNNetwork(object):
             self.residuals = pickle.load(p)
         self.models = []
         for i in range(self.node_num):
-            model_file = path_name + os.sep + 'model' + str(i) + '.h5'
+            model_file = path_name + os.sep + 'model' + str(i) + '.keras'
             model = load_model(model_file)
             self.models.append(model)
 
@@ -149,6 +151,6 @@ class MultivariateVARDNNetwork(object):
         with open(resi_file, 'wb') as p:
             pickle.dump(self.residuals, p)
         for i in range(len(self.models)):
-            model_file = path_name + os.sep + 'model' + str(i) + '.h5'
+            model_file = path_name + os.sep + 'model' + str(i) + '.keras'
             self.models[i].save(model_file)
 
